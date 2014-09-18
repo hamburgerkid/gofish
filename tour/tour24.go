@@ -3,11 +3,13 @@ package main
 import (
 	"fmt"
 	"math"
+	"os"
+	"strconv"
 )
 
 func Sqrt(x float64) float64 {
-	a := 1.0
 	c := 0
+	a := float64(1)
 	z := float64(1)
 	for {
 		c += 1
@@ -17,12 +19,15 @@ func Sqrt(x float64) float64 {
 			a = z
 		}
 	}
-	fmt.Println(c)
+	fmt.Printf("num of calc:%d\n", c)
 	return a
 }
 
 func main() {
-	i := float64(2)
-	fmt.Println(Sqrt(i))
-	fmt.Println(math.Sqrt(i))
+	f := float64(2)
+	if len(os.Args) > 1 {
+		f, _ = strconv.ParseFloat(os.Args[1], 64)
+	}
+	fmt.Printf("this func:%v\n", Sqrt(f))
+	fmt.Printf("math pkg :%v\n", math.Sqrt(f))
 }
