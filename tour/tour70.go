@@ -9,11 +9,11 @@ import (
 // Walk walks the tree t sending all values
 // from the tree to the channel ch.
 func Walk(t *tree.Tree, ch chan int) {
-	Step(t, ch)
+	step(t, ch)
 	close(ch)
 }
 
-func Step(t *tree.Tree, ch chan int) {
+func step(t *tree.Tree, ch chan int) {
 	if t.Left != nil {
 		Step(t.Left, ch)
 	}
