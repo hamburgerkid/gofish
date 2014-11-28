@@ -20,14 +20,13 @@ type result struct {
 // Crawl uses fetcher to recursively crawl
 // pages starting with url, to a maximum of depth.
 func Crawl(url string, depth int, fetcher Fetcher) {
-	// TODO: Fetch URLs in parallel.
-	// TODO: Don't fetch the same URL twice.
 	// This implementation doesn't do either:
 	results := make(chan result)
 	quit := make(chan int)
 	fetched := make(map[string]bool)
 	fetching := 0
 
+	// Fetch URLs in parallel.
 	go fetch(url, depth, fetcher, results, quit)
 	fetched[url] = true
 	fetching += 1
@@ -41,7 +40,9 @@ func Crawl(url string, depth int, fetcher Fetcher) {
 			}
 			fmt.Printf("found: %s %q\n", res.url, res.body)
 			for _, u := range res.urls {
+				// Don't fetch the same URL twice.
 				if !fetched[u] {
+					// Fetch URLs in parallel.
 					go fetch(u, res.depth-1, fetcher, results, quit)
 					fetched[u] = true
 					fetching += 1
