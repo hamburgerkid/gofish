@@ -26,6 +26,9 @@ func Crawl(url string, depth int, fetcher Fetcher) {
 	fetched := make(map[string]bool)
 	fetching := 0
 
+	defer close(results)
+	defer close(quit)
+
 	// Fetch URLs in parallel.
 	go fetch(url, depth, fetcher, results, quit)
 	fetched[url] = true
@@ -54,7 +57,6 @@ func Crawl(url string, depth int, fetcher Fetcher) {
 			}
 		}
 	}
-	close(results)
 }
 
 func fetch(url string, depth int, fetcher Fetcher, results chan result, quit chan int) {
